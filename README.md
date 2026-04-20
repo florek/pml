@@ -6,7 +6,7 @@ Repo pod naukę — ML, ćwiczenia z kodem, porządek w projekcie. Spokojnie, kr
 
 [W notatkach](docs/lessons/wiedza.md) jest opisane, co jest w repo i co robi lekcja z perceptronem — napisane po ludzku, bez przesady.
 
-Quiz do utrwalenia materiału z notatek: [pytania](docs/quiz/questions/15.04.2026_questions.md), [moje odpowiedzi (szablon)](docs/quiz/my_answers/15.04.2026_my_answers.md), [klucz](docs/quiz/answers/15.04.2026_answers.md).
+Quiz do utrwalenia materiału z notatek: [pytania](docs/quiz/questions/19.04.2026_questions.md), [moje odpowiedzi (szablon)](docs/quiz/my_answers/19.04.2026_my_answers.md), [klucz](docs/quiz/answers/19.04.2026_answers.md). Starsza seria z 15.04.2026: [pytania](docs/quiz/questions/15.04.2026_questions.md), [szablon](docs/quiz/my_answers/15.04.2026_my_answers.md), [klucz](docs/quiz/answers/15.04.2026_answers.md).
 
 ## Start w kilku krokach
 
