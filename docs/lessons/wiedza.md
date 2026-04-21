@@ -2,9 +2,25 @@
 
 Luźny styl, ale treść ma być ściągą: definicje, „dlaczego tak”, typowe pułapki. Sama wiedza — bez mapowania na konkretne pliki projektu.
 
-## Zakres (materiał do ok. str. 70)
+## Zakres stronicowy (1–79)
 
-Notatki i powiązane quizy z tego repozytorium obejmują **początek ścieżki** z kursu / polskiego wydania podręcznika: od motywacji i rodzajów uczenia, przez środowisko i ekosystem bibliotek, wczytywanie danych i konwencje NumPy, wizualizację próbek i regionów decyzji, po **perceptron** (reguła uczenia, epoki, ograniczenia separowalności) oraz **zapowiedź Adaline** jako przejścia od reguły dyskretnej do minimalizacji ciągłego kosztu. Dalsze rozdziały (np. pełna implementacja gradientu wsadowego dla Adaline z wieloma epokami, regresja logistyczna jako osobny rozdział, SVM) leżą **poza** tym zakresem stronicowym — tu są co najwyżej krótkie odniesienia „co dalej”.
+Materiał dzieli się na **większość rozdziału wstępnego (ok. str. 1–69)** oraz **zakończenie bloku o prostych klasyfikatorach liniowych (ok. str. 70–79)**. W pierwszej części są: rodzaje uczenia, potok danych i metryki, NumPy i Matplotlib, perceptron i ograniczenia separowalności, zapowiedź Adaline. W drugiej — **pełniejsza realizacja Adaline** z **gradientem prostym wsadowym** i ze **stochastycznym spadkiem wzdłuż gradientu (SGD)**, tasowanie próbek w epoce, średni koszt epoki, opcjonalnie **dopasowanie przyrostowe** (`partial_fit`), a także **wczytywanie wbudowanych zbiorów** przez **scikit-learn** (np. pełny Iris z etykietami klas 0/1/2) obok ćwiczeń na lokalnym pliku CSV i problemu **binarnym** z kodowaniem **−1 / 1**. Dalsze duże rozdziały (np. regresja logistyczna jako osobna sekcja, SVM) zaczynają się **po** tym fragmencie.
+
+## Adaline — gradient wsadowy i SGD (ok. str. 70–79)
+
+**Gradient wsadowy (batch)** aktualizuje wagi **raz na epokę** po zebraniu błędów ze **wszystkich** próbek (w praktyce macierzowo przez `X.T` i wektor błędów). **SGD** aktualizuje wagi **po każdej próbce** (wariant jednopróbkowy): w jednej **epoce** przechodzisz cały zbiór w pętli, ale krok wag jest **lokalny** do bieżącej próbki.
+
+**Tasowanie (`shuffle`)** przed przejściem po próbkach w danej epoce zmienia kolejność i ogranicza sztywną zależność od stałego porządku; generator użyty do permutacji powinien być **spójny** z inicjalizacją wag, jeśli zależy Ci na powtarzalności.
+
+**Koszt w SGD przy monitorowaniu:** dla każdej próbki liczysz np. \( \frac{1}{2}(y-\hat{y})^2 \); **jedna wartość na epokę** to często **średnia** tych kosztów po próbkach w tej epoce — dopiero ją dopisujesz do historii, żeby wykres miał **jeden punkt na epokę**, a nie setki punktów na próbkę.
+
+**Aktualizacja wag w SGD dla Adaline:** błąd \((y-\hat{y})\) jest **skalarem**; wektor cech mnożysz **elementowo** przez ten błąd i skalujesz przez \(\eta\). **Nie** myl tego z jednym **iloczynem skalarnym** wektora cech przez błąd jako substytutu wektorowej poprawki wag cech — taki skalar nie zastąpi poprawnego kroku dla wszystkich współrzędnych.
+
+**`partial_fit`:** służy do uczenia **online** lub w **minibatchach**; jeśli wagi nie były jeszcze zainicjalizowane, wywołuje ten sam mechanizm startu co pełne `fit`.
+
+**scikit-learn:** ładowacz Iris może zwrócić **osobno** macierz cech i wektor etykiet (`return_X_y=True`), co upraszcza dalszy wybór kolumn cech. Biblioteka musi być **zainstalowana w tym samym środowisku** co uruchomienie kodu i wpisana w **liście zależności** projektu — inaczej edytor może zgłaszać nierozwiązany import.
+
+**Standaryzacja** przed Adaline (zwłaszcza przy większym \(\eta\)) wyrównuje skale cech i stabilizuje zbieżność; parametry standaryzacji wyznaczasz na **treningu**, a tę samą transformację stosujesz do nowych obserwacji.
 
 ## Po co ćwiczymy ML w Pythonie
 
@@ -118,9 +134,9 @@ Typowy wzorzec: metoda **dopasowania** uczącego zbioru oraz osobna metoda **pro
 
 Perceptron w podstawowej postaci jest **binarny**. Rozszerzenie na wiele klas: strategia **jeden kontra reszta** (**OvR** / czasem **OvA**): dla każdej klasy jeden klasyfikator z tą klasą jako pozytywną a resztą jako negatywną; przy perceptronach wybór klasy można powiązać z **największą wartością bezwzględną** całkowitego pobudzenia między modelami.
 
-## Od perceptronu do Adaline (zapowiedź)
+## Od perceptronu do Adaline (zapowiedź i trening)
 
-**Adaline** (adaptacyjny neuron liniowy) aktualizuje wagi na podstawie **ciągłej** odpowiedzi liniowej (funkcja aktywacji tożsamościowa na pobudzeniu), a **dopiero** ostateczna decyzja może używać progu podobnego do skoku. **Perceptron** porównuje etykiety z **już** przyciętymi predykcjami dyskretnymi przy aktualizacji wag. Ta różnica wiąże Adaline z ideą **minimalizacji ciągłej funkcji kosztu** (np. błędów kwadratowych), co prowadzi dalej w stronę gradientu i modeli jak regresja logistyczna czy SVM.
+**Adaline** (adaptacyjny neuron liniowy) aktualizuje wagi na podstawie **ciągłej** odpowiedzi liniowej (funkcja aktywacji tożsamościowa na pobudzeniu), a **dopiero** ostateczna decyzja może używać progu podobnego do skoku. **Perceptron** porównuje etykiety z **już** przyciętymi predykcjami dyskretnymi przy aktualizacji wag. Ta różnica wiąże Adaline z ideą **minimalizacji ciągłej funkcji kosztu** (np. błędów kwadratowych), co prowadzi dalej w stronę gradientu i modeli jak regresja logistyczna czy SVM. W implementacji numerycznej **batch Adaline** zbiera gradient po całym zbiorze w epoce; **wersja SGD** wykonuje małe kroki po kolejnych próbkach, zwykle z **średnim kosztem epoki** do wizualizacji zbieżności.
 
 ## Pułapki i dobre nawyki
 
