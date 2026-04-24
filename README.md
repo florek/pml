@@ -6,7 +6,9 @@ Repo pod naukę — ML, ćwiczenia z kodem, porządek w projekcie. Spokojnie, kr
 
 [W notatkach](docs/lessons/wiedza.md) jest opisane, co jest w repo i co robi lekcja z perceptronem — napisane po ludzku, bez przesady.
 
-Quiz do utrwalenia materiału z notatek (str. 1–79; połowa pytań z bloku str. 70–79): [pytania](docs/quiz/questions/21.04.2026_questions.md), [moje odpowiedzi (szablon)](docs/quiz/my_answers/21.04.2026_my_answers.md), [klucz](docs/quiz/answers/21.04.2026_answers.md). Wcześniejsze serie: [20.04.2026](docs/quiz/questions/20.04.2026_questions.md) ([szablon](docs/quiz/my_answers/20.04.2026_my_answers.md), [klucz](docs/quiz/answers/20.04.2026_answers.md)); [19.04.2026](docs/quiz/questions/19.04.2026_questions.md); [15.04.2026](docs/quiz/questions/15.04.2026_questions.md).
+Quiz (aktualna seria): [pytania](docs/quiz/questions/24.04.2026_questions.md), [moje odpowiedzi (szablon)](docs/quiz/my_answers/24.04.2026_my_answers.md), [klucz](docs/quiz/answers/24.04.2026_answers.md).
+
+Wcześniejsze serie: [21.04.2026](docs/quiz/questions/21.04.2026_questions.md) ([szablon](docs/quiz/my_answers/21.04.2026_my_answers.md), [klucz](docs/quiz/answers/21.04.2026_answers.md)); [20.04.2026](docs/quiz/questions/20.04.2026_questions.md) ([szablon](docs/quiz/my_answers/20.04.2026_my_answers.md), [klucz](docs/quiz/answers/20.04.2026_answers.md)); [19.04.2026](docs/quiz/questions/19.04.2026_questions.md); [15.04.2026](docs/quiz/questions/15.04.2026_questions.md).
 
 ## Start w kilku krokach
 

@@ -20,3 +20,14 @@ def plot_decision_regions(X, y, classifier, test_idx=None, resolution=0.02):
         plt.scatter(x=X[y == cl, 0], y=X[y == cl, 1],
                     alpha=0.8, c=colors[idx],
                     marker=markers[idx], label=cl, edgecolor='black')
+    if test_idx:
+        X_test, y_test = X[list(test_idx)], y[list(test_idx)]
+        plt.scatter(
+            X_test[:, 0],
+            X_test[:, 1],
+            c='',
+            edgecolor='black',
+            s=100,
+            label='Zestaw testowy'
+        )
+            

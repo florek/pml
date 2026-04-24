@@ -12,6 +12,8 @@ Materiał dzieli się na **większość rozdziału wstępnego (ok. str. 1–69)*
 
 **Tasowanie (`shuffle`)** przed przejściem po próbkach w danej epoce zmienia kolejność i ogranicza sztywną zależność od stałego porządku; generator użyty do permutacji powinien być **spójny** z inicjalizacją wag, jeśli zależy Ci na powtarzalności.
 
+**Koszt w wariancie wsadowym (batch) w jednej epoce:** typowo zapisuje się **połowę sumy kwadratów błędów** na wyjściu liniowym względem etykiet, czyli agregację \( \frac{1}{2}\sum_i (y_i-\hat{y}_i)^2 \) po wszystkich próbkach wsadu — jeden punkt na epokę w historii kosztu.
+
 **Koszt w SGD przy monitorowaniu:** dla każdej próbki liczysz np. \( \frac{1}{2}(y-\hat{y})^2 \); **jedna wartość na epokę** to często **średnia** tych kosztów po próbkach w tej epoce — dopiero ją dopisujesz do historii, żeby wykres miał **jeden punkt na epokę**, a nie setki punktów na próbkę.
 
 **Aktualizacja wag w SGD dla Adaline:** błąd \((y-\hat{y})\) jest **skalarem**; wektor cech mnożysz **elementowo** przez ten błąd i skalujesz przez \(\eta\). **Nie** myl tego z jednym **iloczynem skalarnym** wektora cech przez błąd jako substytutu wektorowej poprawki wag cech — taki skalar nie zastąpi poprawnego kroku dla wszystkich współrzędnych.
@@ -78,6 +80,8 @@ Uczymy się łączyć matematykę klasyfikacji z kodem: dane jako wektory cech, 
 
 **Wybór podzbioru wierszy i kolumn** w ramce danych: pierwsze sto wierszy na problem binarny dwóch gatunków, konkretne kolumny jako współrzędne w przestrzeni cech (np. długość działki kielicha i długość płatka).
 
+**Ten sam zbiór Iris z biblioteki do klasyfikacji:** możesz wczytać macierz cech i wektor etykiet **osobno**, bez ręcznego rozdzielania kolumn etykiety od cech. Etykiety są **numeryczne** dla trzech klas (np. 0, 1, 2); w problemie binarnym z lokalnej tabeli często mapuje się nazwy gatunków na **−1** i **1**. Wybór **dwóch kolumn** cech (np. dwóch ostatnich) daje obserwacje w **2D**, co ułatwia wizualizację i granicę decyzji.
+
 ## NumPy w roli „silnika” pod model
 
 **Tablice** reprezentują wektory cech i wagi; operacje typu iloczyn skalarny robi się funkcjami zoptymalizowanymi pod CPU, zamiast ręcznych pętli po elementach w czystym Pythonie. **Wektoryzacja** pozwala wykonywać operacje na całych tablicach; pod spodem często wykorzystuje się SIMD oraz biblioteki algebry liniowej (**BLAS**, **LAPACK**).
@@ -100,9 +104,13 @@ Uczymy się łączyć matematykę klasyfikacji z kodem: dane jako wektory cech, 
 
 **Wykres błędu w czasie treningu** oś pozioma to numer epoki (od jedynki), pionowa to liczba **niezerowych korekt** w epoce — sygnał, czy model jeszcze się poprawia.
 
-**Regiony decyzji:** tło jako wypełnione kontury z lekką przezroczystością, na wierzchu te same próbki co wcześniej; **mapa kolorów** ograniczona do tylu kolorów, ile jest **unikalnych etykiet** po treningu; `ListedColormap` łączy listę kolorów z liczbą klas.
+**Regiony decyzji:** tło jako wypełnione kontury z lekką przezroczystością, na wierzchu te same próbki co wcześniej; **mapa kolorów** ograniczona do tylu kolorów, ile jest **unikalnych etykiet** po treningu; `ListedColormap` łączy listę kolorów z liczbą klas. Na siatce 2D budowanej z zakresów obu cech każdy punkt siatki dostaje **prognozę klasy** z już wytrenowanego modelu; wynik układasz z powrotem w kształt siatki pod **wypełnione kontury**. Możesz dodatkowo **wyróżnić** wybrane indeksy próbek (np. jako „test”) innym stylem znaczników, żeby zobaczyć je na tle regionów.
 
 **Backend bez interakcji** (np. rasteryzacja do pliku): wywołanie pokazujące okno może dać ostrzeżenie lub nic nie pokazać — to kwestia środowiska uruchomienia, nie samego modelu.
+
+## Sigmoida — ciągła nieliniowość i mostek do regresji logistycznej
+
+Funkcja **sigmoidalna** \( \sigma(z) = \frac{1}{1 + e^{-z}} \) mapuje dowolne rzeczywiste \(z\) na przedział **otwarty** \((0, 1)\). Dla dużych dodatnich \(z\) wartość zbliża się do **1**, dla dużych ujemnych do **0**, w \(z=0\) jest **\(1/2\)**. W dalszej części kursu służy do **parametryzacji prawdopodobieństwa** klasy przy liniowym \(z\) (regresja logistyczna); w sieciach głębokich nieliniowości tego typu (lub pokrewne) zapobiegają temu, żeby wielowarstwowy model redukował się do pojedynczej kombinacji liniowej bez wyrazistości granic.
 
 ## Neuron i perceptron — kontekst historyczny i formalny
 
